@@ -15,7 +15,7 @@ function setMeta(selector, attr, value) {
 /** Sets document title, description, Open Graph tags and canonical URL per page. */
 export default function usePageMeta({ title, description }) {
   useEffect(() => {
-    const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.tagline}`;
+    const fullTitle = title ? `${title} | ${site.brand}` : `${site.brand} — ${site.brandTagline}`;
     document.title = fullTitle;
     setMeta('meta[name="description"]', 'content', description);
     setMeta('meta[property="og:title"]', 'content', fullTitle);

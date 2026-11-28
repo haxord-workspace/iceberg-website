@@ -1,0 +1,33 @@
+# Render Blueprint: deploys this Vite + React site as a free static site.
+# In Render: New + > Blueprint > pick this repository.
+services:
+  - type: web
+    name: iceberg-weddings
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+    # Single-page app: serve index.html for every route (/contact,
+    # /privacy-policy, ...) so pages work when opened or refreshed directly.
+    # Real files such as /assets/* are served first and are not rewritten.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # Hashed build files never change, so browsers can cache them for a year.
+      - path: /assets/index-*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN

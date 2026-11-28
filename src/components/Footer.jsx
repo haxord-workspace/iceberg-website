@@ -12,15 +12,27 @@ export default function Footer() {
         <div className="footer__brand">
           <Logo light />
           <p>
-            {site.name} is an event staffing and crew management app for Android, developed by {site.developer}.
+            Crafting extraordinary events and unforgettable memories with professional manpower and premium catering
+            services.
           </p>
+          <div className="footer__social">
+            <a href={`mailto:${site.supportEmail}`} aria-label="Email us">
+              <Icon name="mail" size={18} />
+            </a>
+            <a href={site.supportPhoneHref} aria-label="Call us">
+              <Icon name="phone" size={18} />
+            </a>
+            <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+              <Icon name="chat" size={18} />
+            </a>
+          </div>
         </div>
 
-        <nav aria-label="Explore" className="footer__col">
-          <h2 className="footer__heading">Explore</h2>
-          <Link to="/">Home</Link>
-          <Link to="/#features">Features</Link>
-          <Link to="/#about">About</Link>
+        <nav aria-label="Quick links" className="footer__col">
+          <h2 className="footer__heading">Quick Links</h2>
+          <Link to="/#about">About Us</Link>
+          <Link to="/#services">Services</Link>
+          <Link to="/#why-us">Why Choose Us</Link>
           <Link to="/contact">Contact Us</Link>
         </nav>
 
@@ -32,7 +44,7 @@ export default function Footer() {
         </nav>
 
         <div className="footer__col">
-          <h2 className="footer__heading">Support</h2>
+          <h2 className="footer__heading">Get in Touch</h2>
           <a href={`mailto:${site.supportEmail}`} className="footer__contact">
             <Icon name="mail" size={16} /> {site.supportEmail}
           </a>
@@ -47,11 +59,9 @@ export default function Footer() {
 
       <div className="container footer__bottom">
         <p>
-          © {year} {site.developer}. All rights reserved.
+          © {year} {site.brand}. All rights reserved.
         </p>
-        <p className="footer__pkg">
-          Android package: <code>{site.packageName}</code>
-        </p>
+        <p>{site.brandTagline}</p>
       </div>
     </footer>
   );
