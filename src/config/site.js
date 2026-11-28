@@ -20,6 +20,30 @@ export const site = {
   supportPhone: '+91 8086019216',
   supportPhoneHref: 'tel:+918086019216',
   region: 'Kerala, India',
+  // Used by the WhatsApp buttons (country code + number, digits only).
+  // Confirm this number is registered on WhatsApp before publishing.
+  whatsapp: '918086019216',
+
+  // Optional full-screen photos for the home hero (they crossfade every 5s),
+  // e.g. ['/assets/hero/event-1.jpg', '/assets/hero/event-2.jpg'].
+  // Leave empty to use the teal brand backdrop.
+  heroImages: [],
+
+  // ---- Business website (Servio Berg) -------------------------------------
+  brand: 'Servio Berg',
+  brandTagline: 'Staff Outsourcing for Catering',
+
+  // Figures for the stats band. Only add real, verifiable numbers; the band
+  // is hidden while this list is empty. e.g. { value: '500+', label: 'Events Managed' }
+  stats: [],
+
+  // Real client reviews only (with the client's permission). The section is
+  // hidden while this list is empty. e.g. { name: 'Client name', role: 'Bride', text: '…' }
+  testimonials: [],
+
+  // Event photos for the gallery, e.g. { src: '/assets/gallery/1.jpg', alt: 'Wedding reception' }.
+  // The gallery section is hidden while this list is empty.
+  gallery: [],
 
   legalLastUpdated: 'November 26, 2026',
 };

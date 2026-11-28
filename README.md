@@ -2,7 +2,7 @@
 
 Official website and legal pages for the **Servioberg** Android app (`com.servioberg.iceberg`), developed by **Haxord Technologies**.
 
-Built with React 18, Vite 5 and React Router 6. No UI or icon libraries — icons are inline SVG and all styling is in one CSS file.
+Built with React 18, Vite 6 and React Router 7. No UI or icon libraries — icons are inline SVG and all styling is in one CSS file.
 
 | Route | Page |
 | --- | --- |
@@ -21,7 +21,7 @@ npm run build     # production build in dist/
 npm run preview   # serve the production build at http://localhost:4173
 ```
 
-Requires Node.js 18 or newer.
+Requires Node.js 20 or newer. Render builds with Node 22 (set in `render.yaml` and `.node-version`).
 
 ## Project structure
 
@@ -60,6 +60,26 @@ Resolve each one (edit the text and remove the `<Confirm>` wrapper), then delete
 There is no backend endpoint for website submissions, so the Contact and Account Deletion forms open the visitor’s email app with a pre-filled message to the support address (`mailto:`). The page never claims a request was submitted — it tells the user to press **Send**, and shows the message so it can be copied if no email app opens.
 
 To submit directly instead, add a public endpoint to the backend (for example `POST /api/v1/account-deletion-requests`), add the website’s domain to the backend’s `CORS_ALLOWED_ORIGINS`, and replace `openMail()` in `src/components/MailtoForm.jsx` with a `fetch` POST that shows success only on a 2xx response. The existing `/api/v1/enquires` endpoint is for event enquiries (it requires an event date and location), so it is not suitable.
+
+## Deploy to Render
+
+The repo includes a Render Blueprint (`render.yaml`) that deploys the site as a free **Static Site**.
+
+1. Push this repository to GitHub.
+2. Sign in at <https://render.com> with the GitHub account that can access `haxord-workspace/iceberg-website`.
+3. **New + → Blueprint**, select the repository, then **Apply**. Render runs `npm ci && npm run build` and publishes `dist/`.
+4. Optional: **Settings → Custom Domains** to add your own domain.
+
+To create the service by hand instead (**New + → Static Site**), use:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm ci && npm run build` |
+| Publish directory | `dist` |
+| Environment variable | `NODE_VERSION` = `22` |
+| Redirects/Rewrites | Source `/*`, Destination `/index.html`, Action **Rewrite** |
+
+The rewrite rule is required. Without it, opening or refreshing `/contact`, `/privacy-policy` or `/delete-account` directly returns a 404.
 
 ## Deploy to Vercel
 

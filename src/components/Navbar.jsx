@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo.jsx';
 import Icon from './Icon.jsx';
 
+const links = [
+  { to: '/#about', label: 'About Us' },
+  { to: '/#services', label: 'Services' },
+  { to: '/#why-us', label: 'Why Us' },
+  { to: '/contact', label: 'Contact' },
+];
+
+/**
+ * Fixed header. Transparent over each page's dark hero, then frosted glass
+ * once the page scrolls (or while the mobile menu is open).
+ */
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -11,7 +22,7 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [pathname, hash]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -25,40 +36,56 @@ export default function Navbar() {
   }, [open]);
 
   const close = () => setOpen(false);
-  const isHome = pathname === '/' && hash !== '#about';
-  const isAbout = pathname === '/' && hash === '#about';
+  const solid = scrolled || open;
+  const current = (to) => (to.startsWith('/#') ? pathname === '/' && hash === to.slice(1) : pathname === to);
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+    <header className={`navbar ${solid ? 'navbar--solid' : ''}`}>
       <div className="container navbar__inner">
-        <Logo onClick={close} />
+        <Logo onClick={close} light={!solid} />
+
+        <nav className="navbar__nav" aria-label="Primary">
+          {links.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`navbar__link ${current(l.to) ? 'active' : ''}`}
+              aria-current={current(l.to) ? 'page' : undefined}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Link to="/#contact" className="btn btn--primary btn--sm navbar__cta">
+          Book an Event
+        </Link>
 
         <button
           type="button"
           className="navbar__toggle"
           aria-expanded={open}
-          aria-controls="primary-nav"
+          aria-controls="mobile-nav"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((v) => !v)}
         >
-          <Icon name={open ? 'close' : 'menu'} size={24} />
+          <Icon name={open ? 'close' : 'menu'} size={26} />
         </button>
-
-        <nav id="primary-nav" className={`navbar__nav ${open ? 'is-open' : ''}`} aria-label="Primary">
-          <Link to="/" className={`navbar__link ${isHome ? 'active' : ''}`} aria-current={isHome ? 'page' : undefined}>
-            Home
-          </Link>
-          <Link to="/#about" className={`navbar__link ${isAbout ? 'active' : ''}`}>
-            About
-          </Link>
-          <NavLink to="/contact" className="navbar__link">
-            Contact
-          </NavLink>
-          <Link to="/delete-account" className="btn btn--primary btn--sm navbar__cta">
-            Account help
-          </Link>
-        </nav>
       </div>
+
+      <nav id="mobile-nav" className={`mobile-nav ${open ? 'is-open' : ''}`} aria-label="Mobile" hidden={!open}>
+        <div className="container mobile-nav__inner">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className="mobile-nav__link" onClick={close}>
+              {l.label}
+              <Icon name="chevronRight" size={18} />
+            </Link>
+          ))}
+          <Link to="/#contact" className="btn btn--primary btn--block" onClick={close}>
+            Book an Event
+          </Link>
+        </div>
+      </nav>
     </header>
   );
 }

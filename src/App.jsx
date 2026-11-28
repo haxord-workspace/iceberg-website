@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import WhatsAppButton from './components/WhatsAppButton.jsx';
 import ScrollManager from './components/ScrollManager.jsx';
 import Home from './pages/Home.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
@@ -28,6 +29,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }
